@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pylab as plt
 
 class Kmeans():
 
@@ -34,13 +33,12 @@ class Kmeans():
 
     def __generate_random_centroids(self, k):
         """
-        generate random centroids
+        generate new random centroids
         """
-        max_column_value =np.amax(self.data, axis=0)
+        min_value, max_value = np.amin(self.data, axis=0), np.amax(self.data, axis=0)
         vector_lenght = len(self.data[0])
 
-        centroids = np.random.rand(k, vector_lenght)*max_column_value
-
+        centroids = min_value + np.random.rand(k, vector_lenght)*(max_value - min_value)
         return centroids
 
 
@@ -91,19 +89,6 @@ class Kmeans():
 
         self.history.append(new_centroids)
         self.centroids = new_centroids
-
-
-# Teste
-c = [np.random.normal((2,10)) for x in range(1,10)]
-b = [np.random.normal((1,5)) for x in range(1,10)]
-a = np.concatenate((b, c), axis=0)
-kmeans = Kmeans(a, 2)
-
-
-for i in range(6):
-    kmeans.one_step()
-
-x , y = zip(*kmeans.data)
-plt.scatter(x, y)
-cx, cy = zip(*kmeans.centroids)
-plt.scatter(cx, cy)
+        
+        return clusters
+   
